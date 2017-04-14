@@ -25,6 +25,8 @@
 #include "config/parameter_group.h"
 #include "config/parameter_group_ids.h"
 
+#include "drivers/vtx_common.h"
+
 #include "fc/config.h"
 #include "fc/runtime_config.h"
 
@@ -43,41 +45,38 @@ void vtxControlInit(void)
 {
     // NOTHING TO DO
 }
-/*
-static void setChannelSaveAndNotify(void)
+
+static void vtxUpdateBandAndChannel(uint8_t bandStep, uint8_t channelStep)
 {
     if (ARMING_FLAG(ARMED)) {
         locked = 1;
     }
 
     if (!locked) {
-        // TODO use VTX api here.
-
-        writeEEPROM();
-        readEEPROM();
-        //beeperConfirmationBeeps(band or channel);
+        uint8_t band = 0, channel = 0;
+        vtxCommonGetBandChan(&band, &channel);
+        vtxCommonSetBandChan(band + bandStep, channel + channelStep);
     }
 }
-*/
 
 void vtxIncrementBand(void)
 {
-    // TODO use VTX api here.
+    vtxUpdateBandAndChannel(+1, 0);
 }
 
 void vtxDecrementBand(void)
 {
-    // TODO use VTX api here.
+    vtxUpdateBandAndChannel(-1, 0);
 }
 
 void vtxIncrementChannel(void)
 {
-    // TODO use VTX api here.
+    vtxUpdateBandAndChannel(0, +1);
 }
 
 void vtxDecrementChannel(void)
 {
-    // TODO use VTX api here.
+    vtxUpdateBandAndChannel(0, -1);
 }
 
 void vtxUpdateActivatedChannel(void)
@@ -96,8 +95,7 @@ void vtxUpdateActivatedChannel(void)
                 && index != lastIndex) {
                 lastIndex = index;
 
-                // TODO use VTX api here
-                //vtxSetBandAndChannel(vtxChannelActivationCondition->band, vtxChannelActivationCondition->channel);
+                vtxCommonSetBandChan(vtxChannelActivationCondition->band, vtxChannelActivationCondition->channel);
                 break;
             }
         }
