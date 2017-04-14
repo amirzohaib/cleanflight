@@ -41,22 +41,9 @@
 
 #include "io/vtx_rtc6705.h"
 
-static bool featureRead = false;
-static uint8_t cmsx_featureVtx = 0;
-static bool cmsx_vtxEnabled;
 static uint8_t cmsx_vtxBand;
 static uint8_t cmsx_vtxChannel;
-static uint8_t cmsx_vtxRfPower;
-
-static long cmsx_Vtx_FeatureRead(void)
-{
-    return 0;
-}
-
-static long cmsx_Vtx_FeatureWriteback(void)
-{
-    return 0;
-}
+static uint8_t cmsx_vtxPower;
 
 static const char * const vtxBandNames[] = {
     "BOSCAM A",
@@ -68,31 +55,24 @@ static const char * const vtxBandNames[] = {
 
 static OSD_TAB_t entryVtxBand = {&cmsx_vtxBand, 4, &vtxBandNames[0]};
 static OSD_UINT8_t entryVtxChannel =  {&cmsx_vtxChannel, 1, 8, 1};
-static OSD_UINT8_t entryVtxRfPower =  {&cmsx_vtxRfPower, 0, 1, 1};
+static OSD_UINT8_t entryVtxPower =  {&cmsx_vtxPower, 0, RTC6705_POWER_COUNT, 1};
 
 static void cmsx_Vtx_ConfigRead(void)
 {
-#ifdef RTC6705_POWER_PIN
-    cmsx_vtxEnabled = vtxRTC6705Config()->enabled;
-#endif
     cmsx_vtxBand = vtxRTC6705Config()->band - 1;
     cmsx_vtxChannel = vtxRTC6705Config()->channel;
-    cmsx_vtxRfPower = vtxRTC6705Config()->rfPower;
+    cmsx_vtxPower = vtxRTC6705Config()->power;
 }
 
 static void cmsx_Vtx_ConfigWriteback(void)
 {
-#ifdef RTC6705_POWER_PIN
-    vtxRTC6705ConfigMutable()->enabled = cmsx_vtxEnabled;
-#endif
     vtxRTC6705ConfigMutable()->band = cmsx_vtxBand + 1;
     vtxRTC6705ConfigMutable()->channel = cmsx_vtxChannel;
-    vtxRTC6705ConfigMutable()->rfPower = cmsx_vtxRfPower;
+    vtxRTC6705ConfigMutable()->power = cmsx_vtxPower;
 }
 
 static long cmsx_Vtx_onEnter(void)
 {
-    cmsx_Vtx_FeatureRead();
     cmsx_Vtx_ConfigRead();
 
     return 0;
@@ -111,13 +91,9 @@ static long cmsx_Vtx_onExit(const OSD_Entry *self)
 static OSD_Entry cmsx_menuVtxEntries[] =
 {
     {"--- VTX ---", OME_Label, NULL, NULL, 0},
-    {"FEATURE", OME_Bool, NULL, &cmsx_featureVtx, 0},
-#ifdef RTC6705_POWER_PIN
-    {"ENABLED", OME_Bool, NULL, &cmsx_vtxEnabled, 0},
-#endif
     {"BAND", OME_TAB, NULL, &entryVtxBand, 0},
     {"CHANNEL", OME_UINT8, NULL, &entryVtxChannel, 0},
-    {"RF POWER", OME_UINT8, NULL, &entryVtxRfPower, 0},
+    {"POWER", OME_UINT8, NULL, &entryVtxPower, 0},
     {"BACK", OME_Back, NULL, NULL, 0},
     {NULL, OME_END, NULL, NULL, 0}
 };
@@ -127,7 +103,7 @@ CMS_Menu cmsx_menuVtx = {
     .GUARD_type = OME_MENU,
     .onEnter = cmsx_Vtx_onEnter,
     .onExit= cmsx_Vtx_onExit,
-    .onGlobalExit = cmsx_Vtx_FeatureWriteback,
+    .onGlobalExit = NULL,
     .entries = cmsx_menuVtxEntries
 };
 

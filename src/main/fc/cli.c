@@ -870,12 +870,9 @@ static const clivalue_t valueTable[] = {
 
 // PG_VTX_CONFIG
 #if defined(VTX_RTC6705) || defined(VTX_RTC6705SOFTSPI)
-#ifdef RTC6705_POWER_PIN
-    { "vtx_enabled",                VAR_UINT8  | MASTER_VALUE, .config.minmax = { 0, 1 }, PG_VTX_RTC6705_CONFIG, offsetof(vtxRTC6705Config_t, enabled) },
-#endif
     { "vtx_band",                   VAR_UINT8  | MASTER_VALUE, .config.minmax = { 1, 5 }, PG_VTX_RTC6705_CONFIG, offsetof(vtxRTC6705Config_t, band) },
     { "vtx_channel",                VAR_UINT8  | MASTER_VALUE, .config.minmax = { 1, 8 }, PG_VTX_RTC6705_CONFIG, offsetof(vtxRTC6705Config_t, channel) },
-    { "vtx_power",                  VAR_UINT8  | MASTER_VALUE, .config.minmax = { 0, 1 }, PG_VTX_RTC6705_CONFIG, offsetof(vtxRTC6705Config_t, rfPower) },
+    { "vtx_power",                  VAR_UINT8  | MASTER_VALUE, .config.minmax = { 0, RTC6705_POWER_COUNT }, PG_VTX_RTC6705_CONFIG, offsetof(vtxRTC6705Config_t, power) },
 #endif
 
 // PG_VCD_CONFIG

@@ -324,7 +324,7 @@ static void osdDrawSingleElement(uint8_t item)
             // FIXME Use VTX API to show current state, not config.
             const char vtxBandLetter = vtx58BandLetter[vtxRTC6705Config()->band];
             const char *vtxChannelName = vtx58ChannelNames[vtxRTC6705Config()->channel];
-            sprintf(buff, "%c:%s:%d", vtxBandLetter, vtxChannelName, vtxRTC6705Config()->rfPower);
+            sprintf(buff, "%c:%s:%d", vtxBandLetter, vtxChannelName, vtxRTC6705Config()->power);
             break;
         }
 #endif
