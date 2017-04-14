@@ -55,11 +55,7 @@
 #include "drivers/max7456_symbols.h"
 #include "drivers/display.h"
 #include "drivers/system.h"
-#ifdef VTX_RTC6705SOFTSPI
-#include "drivers/vtx_soft_spi_rtc6705.h"
-#elif defined(VTX_RTX6705)
-#include "drivers/vtx_rtc6705.h"
-#endif
+#include "drivers/vtx_common.h"
 
 #include "io/asyncfatfs/asyncfatfs.h"
 #include "io/flashfs.h"
@@ -318,13 +314,18 @@ static void osdDrawSingleElement(uint8_t item)
             break;
         }
 
-#if defined(VTX_RTC6705)
+#if defined(VTX_COMMON)
         case OSD_VTX_CHANNEL:
         {
-            // FIXME Use VTX API to show current state, not config.
-            const char vtxBandLetter = vtx58BandLetter[vtxRTC6705Config()->band];
-            const char *vtxChannelName = vtx58ChannelNames[vtxRTC6705Config()->channel];
-            sprintf(buff, "%c:%s:%d", vtxBandLetter, vtxChannelName, vtxRTC6705Config()->power);
+            uint8_t band=0, channel=0;
+            vtxCommonGetBandChan(&band,&channel);
+
+            uint8_t power = 0;
+            vtxCommonGetPowerIndex(&power);
+
+            const char vtxBandLetter = vtx58BandLetter[band];
+            const char *vtxChannelName = vtx58ChannelNames[channel];
+            sprintf(buff, "%c:%s:%d", vtxBandLetter, vtxChannelName, power);
             break;
         }
 #endif
