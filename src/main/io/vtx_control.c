@@ -43,7 +43,7 @@ void vtxControlInit(void)
 {
     // NOTHING TO DO
 }
-
+/*
 static void setChannelSaveAndNotify(void)
 {
     if (ARMING_FLAG(ARMED)) {
@@ -58,6 +58,7 @@ static void setChannelSaveAndNotify(void)
         //beeperConfirmationBeeps(band or channel);
     }
 }
+*/
 
 void vtxIncrementBand(void)
 {

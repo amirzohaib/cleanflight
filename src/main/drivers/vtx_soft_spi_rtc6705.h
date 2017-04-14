@@ -29,10 +29,8 @@
 #define CHANNELS_PER_BAND   8
 #define BANDS_NUMBER        5
 
-extern uint16_t const vtx_freq[];
-extern uint16_t current_vtx_channel;
-
 void rtc6705_soft_spi_init(void);
-void rtc6705_soft_spi_set_channel(uint16_t channel_freq);
+void rtc6705_soft_spi_set_freq(uint16_t channel_freq);
+void rtc6705_soft_spi_set_band_and_channel(const uint8_t band, const uint8_t channel);
 void rtc6705_soft_spi_set_rf_power(uint8_t reduce_power);
 

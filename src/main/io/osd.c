@@ -55,7 +55,7 @@
 #include "drivers/max7456_symbols.h"
 #include "drivers/display.h"
 #include "drivers/system.h"
-#ifdef USE_RTC6705
+#ifdef VTX_RTC6705SOFTSPI
 #include "drivers/vtx_soft_spi_rtc6705.h"
 #elif defined(VTX_RTX6705)
 #include "drivers/vtx_rtc6705.h"

@@ -24,7 +24,7 @@
 
 #include "platform.h"
 
-#if defined(VTX_RTC6705) && defined(VTX_CONTROL)
+#if (defined(VTX_RTC6705) && defined(VTX_CONTROL)) || defined(VTX_RTC6705SOFTSPI)
 #include "build/build_config.h"
 
 #include "cms/cms.h"
@@ -48,6 +48,7 @@
 
 #include "build/debug.h"
 
+#if defined(VTX_RTC6705SOFTSPI) || defined(VTX_RTC6705)
 PG_REGISTER_WITH_RESET_TEMPLATE(vtxRTC6705Config_t, vtxRTC6705Config, PG_VTX_RTC6705_CONFIG, 0);
 
 PG_RESET_TEMPLATE(vtxRTC6705Config_t, vtxRTC6705Config,
@@ -56,6 +57,8 @@ PG_RESET_TEMPLATE(vtxRTC6705Config_t, vtxRTC6705Config,
     .rfPower = 0,
     .enabled = true
 );
+#endif
+
 
 #if defined(CMS) || defined(VTX_COMMON)
 static const char * const rtc6705PowerNames[] = {

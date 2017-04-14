@@ -459,13 +459,10 @@ void init(void)
  * VTX
  */
 
-#ifdef USE_RTC6705
-    if (feature(FEATURE_VTX)) {
-        rtc6705_soft_spi_init();
-        current_vtx_channel = vtxConfig()->vtx_channel;
-        rtc6705_soft_spi_set_channel(vtx_freq[current_vtx_channel]);
-        rtc6705_soft_spi_set_rf_power(vtxConfig()->vtx_power);
-    }
+#ifdef VTX_RTC6705SOFTSPI
+    rtc6705_soft_spi_init();
+    rtc6705_soft_spi_set_band_and_channel(vtxRTC6705Config()->band, vtxRTC6705Config()->channel);
+    rtc6705_soft_spi_set_rf_power(vtxRTC6705Config()->rfPower);
 #endif
 
 /*

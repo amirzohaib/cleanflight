@@ -50,23 +50,11 @@ static uint8_t cmsx_vtxRfPower;
 
 static long cmsx_Vtx_FeatureRead(void)
 {
-    if (!featureRead) {
-        cmsx_featureVtx = feature(FEATURE_VTX) ? 1 : 0;
-        featureRead = true;
-    }
-
     return 0;
 }
 
 static long cmsx_Vtx_FeatureWriteback(void)
 {
-    if (featureRead) {
-        if (cmsx_featureVtx)
-            featureSet(FEATURE_VTX);
-        else
-            featureClear(FEATURE_VTX);
-    }
-
     return 0;
 }
 
@@ -84,7 +72,9 @@ static OSD_UINT8_t entryVtxRfPower =  {&cmsx_vtxRfPower, 0, 1, 1};
 
 static void cmsx_Vtx_ConfigRead(void)
 {
+#ifdef RTC6705_POWER_PIN
     cmsx_vtxEnabled = vtxRTC6705Config()->enabled;
+#endif
     cmsx_vtxBand = vtxRTC6705Config()->band - 1;
     cmsx_vtxChannel = vtxRTC6705Config()->channel;
     cmsx_vtxRfPower = vtxRTC6705Config()->rfPower;
@@ -92,7 +82,9 @@ static void cmsx_Vtx_ConfigRead(void)
 
 static void cmsx_Vtx_ConfigWriteback(void)
 {
+#ifdef RTC6705_POWER_PIN
     vtxRTC6705ConfigMutable()->enabled = cmsx_vtxEnabled;
+#endif
     vtxRTC6705ConfigMutable()->band = cmsx_vtxBand + 1;
     vtxRTC6705ConfigMutable()->channel = cmsx_vtxChannel;
     vtxRTC6705ConfigMutable()->rfPower = cmsx_vtxRfPower;
@@ -120,7 +112,9 @@ static OSD_Entry cmsx_menuVtxEntries[] =
 {
     {"--- VTX ---", OME_Label, NULL, NULL, 0},
     {"FEATURE", OME_Bool, NULL, &cmsx_featureVtx, 0},
+#ifdef RTC6705_POWER_PIN
     {"ENABLED", OME_Bool, NULL, &cmsx_vtxEnabled, 0},
+#endif
     {"BAND", OME_TAB, NULL, &entryVtxBand, 0},
     {"CHANNEL", OME_UINT8, NULL, &entryVtxChannel, 0},
     {"RF POWER", OME_UINT8, NULL, &entryVtxRfPower, 0},
@@ -137,5 +131,5 @@ CMS_Menu cmsx_menuVtx = {
     .entries = cmsx_menuVtxEntries
 };
 
-#endif // VTX || USE_RTC6705
+#endif // VTX || VTX_RTC6705SOFTSPI
 #endif // CMS
