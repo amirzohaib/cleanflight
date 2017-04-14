@@ -15,29 +15,16 @@
  * along with Cleanflight.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Author: Giles Burgess (giles@multiflite.co.uk)
- *
- * This source code is provided as is and can be used/modified so long
- * as this header is maintained with the file at all times.
- */
-
 #pragma once
 
-#include <stdint.h>
+typedef struct vtxRTC6705Config_s {
+    uint8_t band; //1=A, 2=B, 3=E, 4=F(Airwaves/Fatshark), 5=Raceband
+    uint8_t channel; //1-8
+    uint8_t rfPower;
+    uint8_t enabled;
+} vtxRTC6705Config_t;
 
-#define RTC6705_BAND_COUNT    5
-#define RTC6705_CHANNEL_COUNT 8
-#define RTC6705_RF_POWER_COUNT 2
+PG_DECLARE(vtxRTC6705Config_t, vtxRTC6705Config);
 
-#define RTC6705_FREQ_MIN    5600
-#define RTC6705_FREQ_MAX    5950
+bool vtxRTC6705Init();
 
-#define RTC6705_BOOT_DELAY 350 // milliseconds
-
-void rtc6705IOInit(void);
-void rtc6705SetChannel(uint8_t band, uint8_t channel);
-void rtc6705SetFreq(uint16_t freq);
-void rtc6705SetRFPower(uint8_t rf_power);
-void rtc6705Disable(void);
-void rtc6705Enable(void);
