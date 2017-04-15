@@ -462,7 +462,7 @@ void init(void)
 #ifdef VTX_RTC6705SOFTSPI
     rtc6705_soft_spi_init();
     rtc6705_soft_spi_set_band_and_channel(vtxRTC6705Config()->band, vtxRTC6705Config()->channel);
-    rtc6705_soft_spi_set_rf_power(vtxRTC6705Config()->rfPower);
+    rtc6705_soft_spi_set_rf_power(vtxRTC6705Config()->power);
 #endif
 
 /*
