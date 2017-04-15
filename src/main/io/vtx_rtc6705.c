@@ -62,7 +62,11 @@ PG_RESET_TEMPLATE(vtxRTC6705Config_t, vtxRTC6705Config,
 );
 #endif
 
+#ifndef VTX_RTC6705SOFTSPI
 #define WAIT_FOR_VTX while (!canUpdateVTX()) {}
+#else
+#define WAIT_FOR_VTX {}
+#endif
 
 #if defined(CMS) || defined(VTX_COMMON)
 #ifdef RTC6705_POWER_PIN
