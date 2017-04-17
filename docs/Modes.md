@@ -98,6 +98,10 @@ quick Iterm windups during finishes of rolls and flips, which will provide much 
 of flips and rolls what again opens the ability to have higher I gains for some.
 Note that AIRMODE will also overrule motor stop function! It will basically also act as an idle up switch.
 
+## Anti-Gravity mode
+
+I have no idea what it does so please someone explain
+
 
 ## Auxillary Configuration
 
